@@ -1,15 +1,17 @@
 package com.dontsova.elena;
 
-public class ArrayTaskList {
-    public Task[] tasks;
-    public int numberOfTasks;
+public class ArrayTaskList extends TaskList {
+    private Task[] tasks;
+    private int numberOfTasks;
     private int currentCapacity;
 
     public ArrayTaskList(){
         currentCapacity = 10;
         this.tasks = new Task[currentCapacity];
     }
+    @Override
     public void add(Task task){
+        if (task.equals(null)) throw new NullPointerException("Task shouldn't be null");
         if (numberOfTasks >= currentCapacity){
             currentCapacity = currentCapacity * 2;
             Task[] withAddedTask = new Task[currentCapacity];
@@ -19,6 +21,7 @@ public class ArrayTaskList {
         this.tasks[numberOfTasks] = task;
         this.numberOfTasks++;
     }
+    @Override
     public boolean remove(Task task){
         int indexOfTaskToDelete = -1;
         for(int i = 0; i < tasks.length; i++){
@@ -34,22 +37,14 @@ public class ArrayTaskList {
         }
         return false;
     }
+    @Override
     public int size(){
         return this.numberOfTasks;
     }
+    @Override
     public Task getTask(int index){
-        if (index < numberOfTasks) return tasks[index];
-        System.out.println("Index not found");
-        return null;
+        if (index < 0 || index > size()-1) throw new IndexOutOfBoundsException("Index not found");
+        return tasks[index];
     }
-    public ArrayTaskList incoming(int from, int to){
-        ArrayTaskList incomingTasks = new ArrayTaskList();
-        for(int i = 0; i < this.size(); i++){
-            if(this.tasks[i].nextTimeAfter(from) != -1 &&
-                    this.tasks[i].nextTimeAfter(from) <= to){
-                incomingTasks.add(tasks[i]);
-            }
-        }
-        return incomingTasks;
-    }
+
 }

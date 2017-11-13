@@ -1,5 +1,6 @@
 package com.dontsova.elena;
 
+
 public class Task {
     private String title;
     private int time;
@@ -9,12 +10,15 @@ public class Task {
     private boolean active;
 
     public Task(String title, int time){
+        if (time < 0) throw new IllegalArgumentException("Time cannot be negative");
         this.title = title;
         this.time = time;
         this.start = time;
         this.end = time;
     }
     public Task(String title, int start, int end, int interval){
+        if (start < 0 || end < 0) throw new IllegalArgumentException("Time cannot be negative");
+        if (interval < 1) throw new IllegalArgumentException("interval should me > 0");
         this.title = title;
         this.start = start;
         this.end = end;
@@ -104,3 +108,5 @@ public class Task {
 
     }
 }
+
+
