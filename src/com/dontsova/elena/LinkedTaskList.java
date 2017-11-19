@@ -87,4 +87,30 @@ public class LinkedTaskList  extends TaskList{
             this.last = last;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LinkedTaskList that = (LinkedTaskList) o;
+
+        if (numberOfTasks != that.numberOfTasks) return false;
+        return last.equals(that.last);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = numberOfTasks;
+        result = 31 * result + last.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LinkedTaskList{" +
+                "numberOfTasks=" + numberOfTasks +
+                ", last=" + last +
+                '}';
+    }
 }

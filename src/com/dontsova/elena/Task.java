@@ -1,7 +1,10 @@
 package com.dontsova.elena;
 
 
-public class Task {
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class Task  {
     private String title;
     private int time;
     private int start;
@@ -106,6 +109,103 @@ public class Task {
 
     public static void main(String[] args) {
 
+        Task a1 = new Task("A", 10);
+        Task b1 = new Task("B", 20);
+//
+//        LinkedTaskList a = new LinkedTaskList();
+//        LinkedTaskList b = new LinkedTaskList();
+//        System.out.println(a.equals(b));
+//        a1.setActive(true);
+//        b1.setActive(true);
+//
+//        for (int i = 0; i < 10; i++){
+//            if (i < 5){
+//                a.add(a1);
+//                b.add(b1);
+//            }
+//
+//        }
+//
+//        Task a2 = new Task("A", 10);
+//        Task b2 = new Task("A", 10);
+//        System.out.println(a.size());
+//        System.out.println(b.size());
+//        while (a.size() > 0){
+//            a.remove(a.getTask(a.size() - 1));
+//        }
+//        while (b.size() > 0) {
+//            b.remove(b.getTask(b.size() - 1));
+//        }
+//
+//        for (int i = 0; i < 10; i++){
+//            a.add(a2);
+//            b.add(b2);
+//        }
+
+        ArrayTaskList a = new ArrayTaskList();
+        a.add(a1);
+        a.add(b1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.add(a1);
+        a.remove(b1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        a.remove(a1);
+        System.out.println(a.size());
+
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (time != task.time) return false;
+        if (start != task.start) return false;
+        if (end != task.end) return false;
+        if (interval != task.interval) return false;
+        if (active != task.active) return false;
+        return title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = 31 * result + time;
+        result = 31 * result + start;
+        result = 31 * result + end;
+        result = 31 * result + interval;
+        result = 31 * result + (active ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
+                ", interval=" + interval +
+                ", active=" + active +
+                '}';
     }
 }
 

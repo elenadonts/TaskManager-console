@@ -1,6 +1,8 @@
 package com.dontsova.elena;
 
-public abstract class TaskList {
+import java.util.Iterator;
+
+public abstract class TaskList  {
     public abstract void add(Task task);
     public abstract boolean remove(Task task);
     public abstract int size();
