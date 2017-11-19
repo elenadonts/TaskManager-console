@@ -146,25 +146,11 @@ public class Task  {
         a.add(a1);
         a.add(b1);
         a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
-        a.add(a1);
+
         a.remove(b1);
         a.remove(a1);
         a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
-        a.remove(a1);
+  
         System.out.println(a.size());
 
 
