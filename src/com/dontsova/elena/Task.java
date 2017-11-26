@@ -1,8 +1,6 @@
 package com.dontsova.elena;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Task  {
     private String title;
@@ -111,47 +109,22 @@ public class Task  {
 
         Task a1 = new Task("A", 10);
         Task b1 = new Task("B", 20);
-//
-//        LinkedTaskList a = new LinkedTaskList();
-//        LinkedTaskList b = new LinkedTaskList();
-//        System.out.println(a.equals(b));
-//        a1.setActive(true);
-//        b1.setActive(true);
-//
-//        for (int i = 0; i < 10; i++){
-//            if (i < 5){
-//                a.add(a1);
-//                b.add(b1);
-//            }
-//
-//        }
-//
-//        Task a2 = new Task("A", 10);
-//        Task b2 = new Task("A", 10);
-//        System.out.println(a.size());
-//        System.out.println(b.size());
-//        while (a.size() > 0){
-//            a.remove(a.getTask(a.size() - 1));
-//        }
-//        while (b.size() > 0) {
-//            b.remove(b.getTask(b.size() - 1));
-//        }
-//
-//        for (int i = 0; i < 10; i++){
-//            a.add(a2);
-//            b.add(b2);
-//        }
+
+        LinkedTaskList a4 = new LinkedTaskList();
+        LinkedTaskList b4 = new LinkedTaskList();
+        a4.add(a1);
+        a4.add(b1);
+        a4.remove(b1);
+        System.out.println(a4.getTask(0).hashCode());
+        System.out.println(a1.hashCode());
 
         ArrayTaskList a = new ArrayTaskList();
+        ArrayTaskList b = new ArrayTaskList();
         a.add(a1);
         a.add(b1);
-        a.add(a1);
-
-        a.remove(b1);
-        a.remove(a1);
-        a.remove(a1);
-  
-        System.out.println(a.size());
+        b.add(a1);
+        b.add(b1);
+        System.out.println(a.equals(b));
 
 
     }

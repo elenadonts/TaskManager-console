@@ -2,11 +2,14 @@ package com.dontsova.elena;
 
 import java.util.Iterator;
 
-public abstract class TaskList  {
+public abstract class TaskList implements Iterable<Task>  {
     public abstract void add(Task task);
     public abstract boolean remove(Task task);
     public abstract int size();
     public abstract Task getTask(int index);
+
+
+    public abstract Iterator<Task> iterator();
 
     public TaskList incoming(int from, int to){
         TaskList incomingTasks;

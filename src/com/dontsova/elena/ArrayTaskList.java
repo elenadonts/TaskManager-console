@@ -1,21 +1,52 @@
 package com.dontsova.elena;
 
 import java.util.Arrays;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayTaskList extends TaskList {
 
+public class ArrayTaskList extends TaskList {
 
     private Task[] tasks;
     private int numberOfTasks;
     private int currentCapacity;
+    private class ArrayTaskListIterator implements Iterator<Task> {
+        private int cursor;
+        private int lastCalled = -1;
+        @Override
+        public boolean hasNext() {
+            return cursor < numberOfTasks;
+        }
 
+        @Override
+        public Task next() {
+            if (!hasNext()){
+                throw new NoSuchElementException("No next element");
+            }
+            lastCalled = cursor;
+            return getTask(cursor++);
+        }
+
+        @Override
+        public void remove() {
+            if (lastCalled == -1){
+                throw new IllegalStateException();
+            }
+            ArrayTaskList.this.remove(getTask(lastCalled));
+            cursor = lastCalled;
+            lastCalled = -1;
+        }
+    }
     public ArrayTaskList(){
         currentCapacity = 10;
         this.tasks = new Task[currentCapacity];
     }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new ArrayTaskListIterator();
+    }
+
     @Override
     public void add(Task task){
         if (task.equals(null)) throw new NullPointerException("Task shouldn't be null");
@@ -63,9 +94,14 @@ public class ArrayTaskList extends TaskList {
         ArrayTaskList that = (ArrayTaskList) o;
 
         if (numberOfTasks != that.numberOfTasks) return false;
-        if (currentCapacity != that.currentCapacity) return false;
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(tasks, that.tasks);
+        int i = 0;
+        for (Task a : this){
+            if (!a.equals(((ArrayTaskList) o).getTask(i))){
+                return false;
+            }
+            i++;
+        }
+        return true;
     }
 
     @Override

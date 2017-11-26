@@ -1,10 +1,39 @@
 package com.dontsova.elena;
 
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static java.util.Objects.isNull;
 
 public class LinkedTaskList  extends TaskList{
+    private class LinkedTaskListIterator implements Iterator<Task>{
+        private int cursor;
+        private int lastCalled = -1;
+        @Override
+        public boolean hasNext() {
+            return cursor < numberOfTasks;
+        }
 
+        @Override
+        public Task next() {
+            if (!hasNext()){
+                throw new NoSuchElementException("No next element");
+            }
+            lastCalled = cursor;
+            return getTask(cursor++);
+        }
+
+        @Override
+        public void remove() {
+            if (lastCalled == -1){
+                throw new IllegalStateException();
+            }
+            LinkedTaskList.this.remove(getTask(lastCalled));
+            cursor = lastCalled;
+            lastCalled = -1;
+        }
+    }
     private int numberOfTasks;
     private Node last;
 
@@ -53,6 +82,11 @@ public class LinkedTaskList  extends TaskList{
         return current.getTask();
     }
 
+    @Override
+    public Iterator<Task> iterator() {
+        return new LinkedTaskListIterator();
+    }
+
     private static class Node {
         private Task task;
         private Node last;
@@ -96,13 +130,20 @@ public class LinkedTaskList  extends TaskList{
         LinkedTaskList that = (LinkedTaskList) o;
 
         if (numberOfTasks != that.numberOfTasks) return false;
-        return last.equals(that.last);
+        int i = 0;
+        for (Task a : this){
+            if (!a.equals(((LinkedTaskList) o).getTask(i))){
+                return false;
+            }
+            i++;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = numberOfTasks;
-        result = 31 * result + last.hashCode();
+        result = 31 * result + getTask(0).hashCode();
         return result;
     }
 
