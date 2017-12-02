@@ -1,24 +1,24 @@
 package com.dontsova.elena;
 
-
+import java.util.Date;
 
 public class Task  {
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private Date time;
+    private Date start;
+    private Date end;
     private int interval;
     private boolean active;
 
-    public Task(String title, int time){
-        if (time < 0) throw new IllegalArgumentException("Time cannot be negative");
+    public Task(String title, Date time){
+        if (time.getTime() < 0) throw new IllegalArgumentException("Time cannot be negative");
         this.title = title;
         this.time = time;
         this.start = time;
         this.end = time;
     }
-    public Task(String title, int start, int end, int interval){
-        if (start < 0 || end < 0) throw new IllegalArgumentException("Time cannot be negative");
+    public Task(String title, Date start, Date end, int interval){
+        if (start.getTime() < 0 || end.getTime() < 0) throw new IllegalArgumentException("Time cannot be negative");
         if (interval < 1) throw new IllegalArgumentException("interval should me > 0");
         this.title = title;
         this.start = start;
@@ -45,22 +45,22 @@ public class Task  {
         this.active = active;
     }
 
-    public int getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(Date time) {
         this.time = time;
         this.start = time;
         this.end = time;
         this.interval = 0;
     }
 
-    public int getStartTime() {
+    public Date getStartTime() {
         return start;
     }
 
-    public int getEndTime() {
+    public Date getEndTime() {
         return end;
     }
     public int getRepeatInterval(){
@@ -70,7 +70,7 @@ public class Task  {
         return 0;
     }
 
-    public void setTime(int start, int end, int interval){
+    public void setTime(Date start, Date end, int interval){
         this.time = start;
         this.start = start;
         this.end = end;
@@ -83,50 +83,38 @@ public class Task  {
         }
         return true;
     }
-    public  int nextTimeAfter(int current){
+    public Date nextTimeAfter(Date current){
+        if (current.after(end) || current.equals(end))return null;
         if (isRepeated() && isActive()){
-            int timeBefore  = start;
-            int timeAfter = start;
-            if (current < start){
+            Date timeBefore  = start;
+            Date timeAfter = start;
+            if (current.before(start)){
                 return start;
             }
-            if (current >= start && current <= end){
-                for(int i = start; i <= end; i += interval){
-                    if (current == timeAfter) return timeAfter+interval;
-                    if (current > timeBefore && current < timeAfter) return timeAfter;
+            if ((current.after(start) || current.equals(start)) && (current.before(end) || current.equals(end))){
+                for(long i = start.getTime(); i <= end.getTime(); i += interval*1000){
+                    if (current.equals(timeAfter)) return new Date(timeAfter.getTime()+interval*1000);
+                    if (current.after(timeBefore) && current.before(timeAfter)) return timeAfter;
                     timeBefore = timeAfter;
-                    timeAfter += interval;
+                    timeAfter = new Date(timeAfter.getTime()+ interval*1000);
                 }
             }
         }
-        if (!isRepeated() && current < time && isActive()){
+        if (!isRepeated() && current.before(time) && isActive()){
             return time;
         }
-        return -1;
+        return null;
     }
-
     public static void main(String[] args) {
+        Task a = new Task("s", new Date(0), new Date(1000*3600*24*7), 3600);
+        a.setActive(true);
+        System.out.println(a.getStartTime());
+        System.out.println(a.getEndTime());
+        System.out.println(a.nextTimeAfter(new Date(0)));
 
-        Task a1 = new Task("A", 10);
-        Task b1 = new Task("B", 20);
-
-        LinkedTaskList a4 = new LinkedTaskList();
-        LinkedTaskList b4 = new LinkedTaskList();
-        a4.add(a1);
-        a4.add(b1);
-        a4.remove(b1);
-        System.out.println(a4.getTask(0).hashCode());
-        System.out.println(a1.hashCode());
-
-        ArrayTaskList a = new ArrayTaskList();
-        ArrayTaskList b = new ArrayTaskList();
-        a.add(a1);
-        a.add(b1);
-        b.add(a1);
-        b.add(b1);
-        System.out.println(a.equals(b));
-
-
+//        Date date = new Date();
+//        Task a1 = new Task("A", new Date(10));
+//        Task b1 = new Task("B", date);
     }
 
     @Override
@@ -136,9 +124,9 @@ public class Task  {
 
         Task task = (Task) o;
 
-        if (time != task.time) return false;
-        if (start != task.start) return false;
-        if (end != task.end) return false;
+        if (!time.equals(task.time)) return false;
+        if (!start.equals(task.start)) return false;
+        if (!end.equals(task.end)) return false;
         if (interval != task.interval) return false;
         if (active != task.active) return false;
         return title.equals(task.title);
@@ -147,9 +135,9 @@ public class Task  {
     @Override
     public int hashCode() {
         int result = title.hashCode();
-        result = 31 * result + time;
-        result = 31 * result + start;
-        result = 31 * result + end;
+        result = 31 * result + time.hashCode();
+        result = 31 * result + start.hashCode();
+        result = 31 * result + end.hashCode();
         result = 31 * result + interval;
         result = 31 * result + (active ? 1 : 0);
         return result;

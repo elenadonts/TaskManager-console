@@ -1,5 +1,6 @@
 package com.dontsova.elena;
 
+import java.util.Date;
 import java.util.Iterator;
 
 public abstract class TaskList implements Iterable<Task>  {
@@ -11,7 +12,7 @@ public abstract class TaskList implements Iterable<Task>  {
 
     public abstract Iterator<Task> iterator();
 
-    public TaskList incoming(int from, int to){
+    public TaskList incoming(Date from, Date to){
         TaskList incomingTasks;
         if (this instanceof ArrayTaskList){
             incomingTasks = new ArrayTaskList();
@@ -21,7 +22,7 @@ public abstract class TaskList implements Iterable<Task>  {
         }
 
         for(int i = 0; i < this.size(); i++){
-            if(getTask(i).nextTimeAfter(from) != -1 && getTask(i).nextTimeAfter(from) <= to){
+            if(getTask(i).nextTimeAfter(from) != null && getTask(i).nextTimeAfter(from).before(to)){
                 incomingTasks.add(getTask(i));
             }
         }
