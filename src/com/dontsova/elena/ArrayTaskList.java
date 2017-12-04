@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class ArrayTaskList extends TaskList {
+public class ArrayTaskList extends TaskList{
 
     private Task[] tasks;
     private int numberOfTasks;
@@ -102,6 +102,7 @@ public class ArrayTaskList extends TaskList {
             i++;
         }
         return true;
+        //return Arrays.equals(tasks, that.tasks);
     }
 
     @Override
@@ -119,5 +120,14 @@ public class ArrayTaskList extends TaskList {
                 ", numberOfTasks=" + numberOfTasks +
                 ", currentCapacity=" + currentCapacity +
                 '}';
+    }
+    @Override
+    protected ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList tasks = new ArrayTaskList();
+        for (int i = 0; i < this.tasks.length; i++){
+            tasks.add(this.getTask(i));
+        }
+        return tasks;
+
     }
 }

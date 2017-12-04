@@ -1,8 +1,10 @@
 package com.dontsova.elena;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task  {
+
+public class Task implements Serializable, Cloneable {
     private String title;
     private Date time;
     private Date start;
@@ -92,7 +94,7 @@ public class Task  {
                 return start;
             }
             if ((current.after(start) || current.equals(start)) && (current.before(end) || current.equals(end))){
-                for(long i = start.getTime(); i <= end.getTime(); i += interval*1000){
+                for (long i = start.getTime(); i <= end.getTime(); i += interval*1000){
                     if (current.equals(timeAfter)) return new Date(timeAfter.getTime()+interval*1000);
                     if (current.after(timeBefore) && current.before(timeAfter)) return timeAfter;
                     timeBefore = timeAfter;
@@ -105,16 +107,19 @@ public class Task  {
         }
         return null;
     }
+
     public static void main(String[] args) {
+//        Date date = new Date();
+//        Task a1 = new Task("A", new Date(10));
+//        Task b1 = new Task("B", date);
         Task a = new Task("s", new Date(0), new Date(1000*3600*24*7), 3600);
         a.setActive(true);
         System.out.println(a.getStartTime());
         System.out.println(a.getEndTime());
         System.out.println(a.nextTimeAfter(new Date(0)));
 
-//        Date date = new Date();
-//        Task a1 = new Task("A", new Date(10));
-//        Task b1 = new Task("B", date);
+
+
     }
 
     @Override
@@ -153,6 +158,14 @@ public class Task  {
                 ", interval=" + interval +
                 ", active=" + active +
                 '}';
+    }
+    @Override
+    protected Task clone() throws CloneNotSupportedException {
+        Task task  = (Task)super.clone();
+        task.time = (Date)this.time.clone();
+        task.start = (Date)this.start.clone();
+        task.end = (Date)this.end.clone();
+        return task;
     }
 }
 

@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 import static java.util.Objects.isNull;
 
-public class LinkedTaskList  extends TaskList{
+public class LinkedTaskList  extends TaskList {
     private class LinkedTaskListIterator implements Iterator<Task>{
         private int cursor;
         private int lastCalled = -1;
@@ -62,6 +62,7 @@ public class LinkedTaskList  extends TaskList{
 
         if (cursor.last!= null) cursor.getLast().setNext(cursor.getNext());
         if (cursor.next!= null) cursor.getNext().setLast(cursor.getLast());
+
         numberOfTasks--;
         return true;
     }
@@ -153,5 +154,13 @@ public class LinkedTaskList  extends TaskList{
                 "numberOfTasks=" + numberOfTasks +
                 ", last=" + last +
                 '}';
+    }
+    @Override
+    protected LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList tasks = new LinkedTaskList();
+        for (Task t : this){
+            tasks.add(t);
+        }
+        return tasks;
     }
 }
